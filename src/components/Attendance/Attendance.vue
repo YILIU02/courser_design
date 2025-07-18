@@ -14,7 +14,7 @@
                             <template #prepend>
                                 <el-select placeholder="部门" style="width: 115px;" class="input-with-select"
                                     v-model="deptId">
-                                    <el-option v-for="(v, i) in deptList" :label=v :value="i" />
+                                    <el-option v-for="(v, i) in deptList" :label=v :value="i" :key="i"/>
                                 </el-select>
                             </template>
                             <template #append>
@@ -25,23 +25,6 @@
                 </div>
 
             </div>
-        </el-card>
-        <el-card style="position: relative;" class="ecard">
-            <div>
-                <p style="margin: 0;margin-bottom: 1em;font-size: 1.4em;position: relative;">今月考勤信息<span
-                        style="position: absolute; right: 1em;"></span></p>
-                <div class=" history">
-                    <el-table :data="store.allTheMList" border style="width: 100%">
-                        <el-table-column prop="attDate" label="考勤日期" width="180" />
-                        <el-table-column prop="empName" label="姓名" width="180" />
-                        <el-table-column prop="status" label="考勤状态" />
-                        <el-table-column prop="checkIn" label="签到时间" />
-                        <el-table-column prop="checkOut" label="签退时间" />
-                        <el-table-column prop="remark" label="备注" />
-                    </el-table>
-                </div>
-            </div>
-
         </el-card>
         <el-card class="ecard">
             <p style="margin: 0;margin-bottom: 1em;font-size: 1.4em;position: relative;">历史考勤信息<span
@@ -87,18 +70,18 @@ onMounted(async () => {
             }).join('-')
         });
         store.allAttendList = data;
-         store.allTheMList = store.allAttendList.map((data) => {
-        const list = ref(data.attDate.split('-'))
-        let date = new Date()
-        if (list.value[1] < 10) {
-            list.value[1] = list.value[1][1]
+    //      store.allTheMList = store.allAttendList.map((data) => {
+    //     const list = ref(data.attDate.split('-'))
+    //     let date = new Date()
+    //     if (list.value[1] < 10) {
+    //         list.value[1] = list.value[1][1]
 
 
-        }
-        if (list.value[0] == date.getFullYear() && list.value[1] == date.getMonth()+1) {
-            return data
-        }
-    }).filter((data)=>data!=null);
+    //     }
+    //     if (list.value[0] == date.getFullYear() && list.value[1] == date.getMonth()+1) {
+    //         return data
+    //     }
+    // }).filter((data)=>data!=null);
 
 
     }).catch((err) => ElMessage({
