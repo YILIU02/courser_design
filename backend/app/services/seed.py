@@ -55,7 +55,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="A1001",
             username="admin",
-            password_hash=generate_password_hash("Admin@123"),
+            password_hash=generate_password_hash("CdAdmin#2026!A7"),
             full_name="刘奕",
             email="admin@enterprise.local",
             phone="13800000001",
@@ -68,7 +68,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="M2001",
             username="rd_manager",
-            password_hash=generate_password_hash("Manager@123"),
+            password_hash=generate_password_hash("CdMgr#2026!A7"),
             full_name="周敏",
             email="rd_manager@enterprise.local",
             phone="13800000002",
@@ -81,7 +81,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3001",
             username="rd_user",
-            password_hash=generate_password_hash("Staff@123"),
+            password_hash=generate_password_hash("CdEmp#2026!A7"),
             full_name="陈楠",
             email="rd_user@enterprise.local",
             phone="13800000003",
@@ -94,7 +94,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="M2101",
             username="ops_manager",
-            password_hash=generate_password_hash("Manager@123"),
+            password_hash=generate_password_hash("CdMgr#2026!A7"),
             full_name="何璐",
             email="ops_manager@enterprise.local",
             phone="13800000004",
@@ -107,7 +107,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3101",
             username="ops_user",
-            password_hash=generate_password_hash("Staff@123"),
+            password_hash=generate_password_hash("CdEmp#2026!A7"),
             full_name="王凯",
             email="ops_user@enterprise.local",
             phone="13800000005",
@@ -120,7 +120,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3201",
             username="finance_user",
-            password_hash=generate_password_hash("Staff@123"),
+            password_hash=generate_password_hash("CdEmp#2026!A7"),
             full_name="李欣",
             email="finance_user@enterprise.local",
             phone="13800000006",

@@ -1,52 +1,48 @@
 <template>
   <div class="login-page">
-    <section class="hero">
-      <div class="hero-content">
-        <div class="eyebrow">正式系统改造版</div>
-        <h1>企业人事与协同运营平台</h1>
-        <p>
-          前端采用统一企业后台风格，后端基于 Flask 服务分层与 MySQL 数据模型，
-          覆盖员工、项目、考勤、绩效与请假审批场景。
-        </p>
-        <div class="hero-grid">
-          <div class="hero-card">
-            <div class="hero-card-title">数据一致性</div>
-            <div class="hero-card-text">统一接口响应、统一权限校验、统一聚合统计口径。</div>
-          </div>
-          <div class="hero-card">
-            <div class="hero-card-title">角色权限</div>
-            <div class="hero-card-text">管理员、部门负责人、员工三类角色按范围隔离数据。</div>
+    <div class="login-orb login-orb-left" />
+    <div class="login-orb login-orb-right" />
+
+    <section class="login-shell">
+      <div class="login-copy">
+        <div class="login-chip">企业管理平台</div>
+        <h1>员工协同管理系统</h1>
+        <p>统一处理员工、项目、考勤、绩效与请假审批。</p>
+      </div>
+
+      <section class="login-panel page-card">
+        <div class="login-panel-top">
+          <div class="login-panel-mark">CD</div>
+          <div>
+            <h2 class="page-title">登录系统</h2>
+            <p class="page-subtitle">使用企业账号进入工作台</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="login-panel page-card">
-      <div class="page-header">
-        <div>
-          <h2 class="page-title">系统登录</h2>
-          <p class="page-subtitle">使用企业账号进入工作台</p>
-        </div>
-      </div>
-
-      <el-form :model="form" label-position="top" @submit.prevent="handleSubmit">
-        <el-form-item label="用户名">
-          <el-input v-model="form.username" placeholder="请输入用户名" size="large" />
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="form.password" type="password" show-password placeholder="请输入密码" size="large" />
-        </el-form-item>
-        <el-button :loading="loading" type="primary" size="large" class="login-button" @click="handleSubmit">
-          进入系统
-        </el-button>
-      </el-form>
-
-      <div class="demo-box">
-        <div class="demo-title">演示账号</div>
-        <div class="demo-row"><span>管理员</span><code>admin / Admin@123</code></div>
-        <div class="demo-row"><span>研发负责人</span><code>rd_manager / Manager@123</code></div>
-        <div class="demo-row"><span>普通员工</span><code>rd_user / Staff@123</code></div>
-      </div>
+        <el-form :model="form" label-position="top" autocomplete="off" @submit.prevent="handleSubmit">
+          <el-form-item label="用户名">
+            <el-input
+              v-model="form.username"
+              placeholder="请输入用户名"
+              autocomplete="off"
+              size="large"
+            />
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input
+              v-model="form.password"
+              type="password"
+              show-password
+              placeholder="请输入密码"
+              autocomplete="new-password"
+              size="large"
+            />
+          </el-form-item>
+          <el-button :loading="loading" type="primary" size="large" class="login-button" @click="handleSubmit">
+            进入系统
+          </el-button>
+        </el-form>
+      </section>
     </section>
   </div>
 </template>
@@ -63,8 +59,8 @@ const authStore = useAuthStore()
 
 const loading = ref(false)
 const form = reactive({
-  username: 'admin',
-  password: 'Admin@123',
+  username: '',
+  password: '',
 })
 
 async function handleSubmit() {
@@ -88,144 +84,148 @@ async function handleSubmit() {
 
 <style scoped>
 .login-page {
+  position: relative;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  overflow: hidden;
   background:
-    linear-gradient(135deg, rgba(15, 62, 115, 0.96), rgba(22, 77, 142, 0.84)),
-    url('/cowhourse.svg') center/cover;
-  color: white;
+    radial-gradient(circle at top, rgba(33, 95, 166, 0.08), transparent 30%),
+    linear-gradient(180deg, #f3f6fb 0%, #eaf0f7 100%);
 }
 
-.hero {
+.login-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.login-orb-left {
+  top: 8%;
+  left: -6%;
+  width: 280px;
+  height: 280px;
+  background: rgba(34, 97, 168, 0.18);
+}
+
+.login-orb-right {
+  right: -4%;
+  bottom: 8%;
+  width: 240px;
+  height: 240px;
+  background: rgba(217, 137, 61, 0.16);
+}
+
+.login-shell {
   position: relative;
-  padding: 72px;
+  z-index: 1;
+  min-height: 100vh;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 24px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) 430px;
+  gap: 40px;
   align-items: center;
 }
 
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(217, 137, 61, 0.26), transparent 18%),
-    radial-gradient(circle at 74% 80%, rgba(255, 255, 255, 0.12), transparent 22%);
+.login-copy {
+  padding: 12px 8px;
 }
 
-.hero-content {
-  position: relative;
-  max-width: 660px;
-}
-
-.eyebrow {
+.login-chip {
   display: inline-flex;
+  align-items: center;
   padding: 8px 14px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  font-size: 13px;
-  letter-spacing: 0.1em;
+  background: rgba(15, 62, 115, 0.08);
+  color: var(--brand-strong);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
-h1 {
-  margin: 20px 0 16px;
-  font-size: 56px;
-  line-height: 1.08;
+.login-copy h1 {
+  margin: 18px 0 14px;
+  font-size: 54px;
+  line-height: 1.06;
+  color: var(--text-main);
 }
 
-p {
+.login-copy p {
   margin: 0;
-  max-width: 560px;
-  color: rgba(241, 247, 255, 0.86);
+  max-width: 420px;
+  color: var(--text-subtle);
   font-size: 17px;
   line-height: 1.8;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 34px;
-}
-
-.hero-card {
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-}
-
-.hero-card-title {
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.hero-card-text {
-  color: rgba(241, 247, 255, 0.82);
-  line-height: 1.6;
-  font-size: 14px;
-}
-
 .login-panel {
-  margin: 32px;
-  align-self: center;
-  color: var(--text-main);
+  padding: 10px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 24px 60px rgba(15, 35, 70, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.login-panel-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.login-panel-mark {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #11447c 0%, #3f8fe2 100%);
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: 0 12px 24px rgba(33, 95, 166, 0.22);
 }
 
 .login-button {
   width: 100%;
-  margin-top: 8px;
-}
-
-.demo-box {
-  margin-top: 28px;
-  padding: 18px;
-  border-radius: 18px;
-  background: #f5f8fc;
-}
-
-.demo-title {
+  margin-top: 10px;
+  height: 48px;
+  border-radius: 14px;
   font-weight: 700;
-  margin-bottom: 12px;
 }
 
-.demo-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px dashed rgba(15, 35, 70, 0.08);
-  font-size: 14px;
+:deep(.el-input__wrapper) {
+  min-height: 48px;
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(15, 35, 70, 0.08) inset;
 }
 
-.demo-row:last-child {
-  border-bottom: none;
+:deep(.el-form-item__label) {
+  font-weight: 600;
+  color: var(--text-main);
 }
 
-code {
-  color: var(--brand-strong);
-}
-
-@media (max-width: 1100px) {
-  .login-page {
+@media (max-width: 980px) {
+  .login-shell {
     grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 18px;
   }
 
-  .hero {
-    padding: 40px 24px 16px;
+  .login-copy {
+    padding: 0;
   }
 
-  .login-panel {
-    margin: 0 24px 24px;
+  .login-copy h1 {
+    font-size: 38px;
   }
 
-  h1 {
-    font-size: 40px;
-  }
-
-  .hero-grid {
-    grid-template-columns: 1fr;
+  .login-copy p {
+    max-width: none;
   }
 }
 </style>

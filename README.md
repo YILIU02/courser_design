@@ -1,12 +1,6 @@
 # 企业级员工协同管理系统
 
-基于 `Vue 3 + Vite + Element Plus` 的前端控制台，配套 `Flask + SQLAlchemy + MySQL` 后端服务，覆盖以下业务域：
-
-- 员工管理
-- 项目管理
-- 考勤管理
-- 绩效管理
-- 请假审批
+基于 `Vue 3 + Vite + Element Plus + Flask + SQLAlchemy + MySQL` 的员工管理平台，覆盖员工、项目、考勤、绩效与请假审批等业务模块。
 
 ## 目录结构
 
@@ -48,11 +42,13 @@ flask --app backend/run.py seed
 python backend/run.py
 ```
 
-默认演示账号：
+## 演示账号
 
-- 管理员：`admin / Admin@123`
-- 研发负责人：`rd_manager / Manager@123`
-- 普通员工：`rd_user / Staff@123`
+- 管理员：`admin / CdAdmin#2026!A7`
+- 研发负责人：`rd_manager / CdMgr#2026!A7`
+- 普通员工：`rd_user / CdEmp#2026!A7`
+
+以上凭据仅用于仓库演示说明，线上界面不应展示或自动填充。
 
 ## 前端启动
 
@@ -65,7 +61,7 @@ npm run dev
 
 ## 工程说明
 
-- 统一响应结构、统一权限校验、统一路由守卫
+- 统一响应结构、权限校验与路由守卫
 - 使用数据库索引、聚合查询、批量预加载降低 N+1 请求
 - 按管理员、部门负责人、员工三种角色控制数据范围
 - 前端采用统一后台布局与正式系统样式
