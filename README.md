@@ -29,9 +29,11 @@ cp .env.example .env
 `.env` 示例：
 
 ```env
+APP_ENV=production
 SECRET_KEY=replace-with-strong-secret
-DATABASE_URL=mysql+pymysql://root:123456@127.0.0.1:3306/course_design?charset=utf8mb4
-CORS_ORIGINS=http://127.0.0.1:5173,http://localhost:5173
+DATABASE_URL=mysql+pymysql://course_app:replace-with-strong-db-password@127.0.0.1:3306/course_design?charset=utf8mb4
+CORS_ORIGINS=http://8.134.191.89:8080
+DEMO_PASSWORD=replace-with-a-unique-12-character-or-longer-password
 ```
 
 安装依赖并初始化种子数据：
@@ -44,11 +46,7 @@ python backend/run.py
 
 ## 演示账号
 
-- 管理员：`admin / CdAdmin#2026!A7`
-- 研发负责人：`rd_manager / CdMgr#2026!A7`
-- 普通员工：`rd_user / CdEmp#2026!A7`
-
-以上凭据仅用于仓库演示说明，线上界面不应展示或自动填充。
+执行种子命令前必须设置独立 `DEMO_PASSWORD`。演示账号只用于本地或受控测试环境，不在仓库中提供默认密码。对已有数据执行 `flask --app backend/run.py rotate-demo-password` 可轮换这些账号的密码。
 
 ## 前端启动
 
@@ -65,3 +63,11 @@ npm run dev
 - 使用数据库索引、聚合查询、批量预加载降低 N+1 请求
 - 按管理员、部门负责人、员工三种角色控制数据范围
 - 前端采用统一后台布局与正式系统样式
+
+## 生产安全与部署
+
+- 生产环境必须设置 `APP_ENV=production`、随机 `SECRET_KEY` 和独立数据库账号的 `DATABASE_URL`，缺失时后端拒绝启动。
+- 登录按 IP 与账号限制为 15 分钟 8 次，`deploy/nginx.conf` 还提供独立的入口限流。
+- 登录状态保存在 `sessionStorage`，关闭浏览器会话后自动清除。
+- 后端仅监听 `127.0.0.1:5000`，公网只暴露 Nginx 的 `8080` 端口。
+- 当前仅有公网 IP，保留 HTTP 可访问。取得域名和可信证书后，应启用 HTTPS、HTTP 跳转和 HSTS。

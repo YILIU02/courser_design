@@ -3,6 +3,16 @@ import { defineStore } from 'pinia'
 import api from '../api'
 import { navigationItems } from '../utils/navigation'
 
+function normalizeMeta(meta = {}) {
+  return {
+    departments: meta.departments || [],
+    roles: meta.roles || [],
+    employees: meta.employees || [],
+    leaveTypes: meta.leaveTypes || meta.leave_types || [],
+    projectStatuses: meta.projectStatuses || meta.project_statuses || [],
+  }
+}
+
 export const useAuthStore = defineStore(
   'auth',
   {
@@ -25,6 +35,15 @@ export const useAuthStore = defineStore(
         return navigationItems.filter((item) => !item.roles || item.roles.includes(state.user?.role_code))
       },
       employeeOptions: (state) => state.meta.employees || [],
+      dataScopeText: (state) => {
+        if (state.user?.role_code === 'admin') {
+          return '当前账号可查看系统全部数据。'
+        }
+        if (state.user?.role_code === 'manager') {
+          return '当前账号仅可查看本部门数据。'
+        }
+        return '当前账号仅可查看本人数据，以及本人参与的项目。'
+      },
     },
     actions: {
       async login(payload) {
@@ -44,7 +63,7 @@ export const useAuthStore = defineStore(
         if (this.metaLoaded && !force) {
           return this.meta
         }
-        this.meta = await api.meta.options()
+        this.meta = normalizeMeta(await api.meta.options())
         this.metaLoaded = true
         return this.meta
       },
@@ -63,6 +82,7 @@ export const useAuthStore = defineStore(
     },
     persist: {
       paths: ['token', 'user'],
+      storage: sessionStorage,
     },
   },
 )

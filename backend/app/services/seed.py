@@ -1,3 +1,4 @@
+import os
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
@@ -26,13 +27,33 @@ def score_grade(total_score):
     return "D"
 
 
+DEMO_USERNAMES = (
+    "admin",
+    "rd_manager",
+    "rd_user",
+    "ops_manager",
+    "ops_user",
+    "finance_user",
+)
+
+
+def configured_demo_password():
+    password = os.getenv("DEMO_PASSWORD", "")
+    if len(password) < 12:
+        raise RuntimeError("Set a unique DEMO_PASSWORD of at least 12 characters before seeding demo data")
+    return password
+
+
 def seed_database(fresh=False):
+    demo_password = configured_demo_password() if fresh else None
     if fresh:
         db.drop_all()
     db.create_all()
 
     if Role.query.count() and Department.query.count() and Employee.query.count():
         return
+
+    demo_password = demo_password or configured_demo_password()
 
     roles = [
         Role(code="admin", name="系统管理员"),
@@ -55,7 +76,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="A1001",
             username="admin",
-            password_hash=generate_password_hash("CdAdmin#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="刘奕",
             email="admin@enterprise.local",
             phone="13800000001",
@@ -68,7 +89,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="M2001",
             username="rd_manager",
-            password_hash=generate_password_hash("CdMgr#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="周敏",
             email="rd_manager@enterprise.local",
             phone="13800000002",
@@ -81,7 +102,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3001",
             username="rd_user",
-            password_hash=generate_password_hash("CdEmp#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="陈楠",
             email="rd_user@enterprise.local",
             phone="13800000003",
@@ -94,7 +115,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="M2101",
             username="ops_manager",
-            password_hash=generate_password_hash("CdMgr#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="何璐",
             email="ops_manager@enterprise.local",
             phone="13800000004",
@@ -107,7 +128,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3101",
             username="ops_user",
-            password_hash=generate_password_hash("CdEmp#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="王凯",
             email="ops_user@enterprise.local",
             phone="13800000005",
@@ -120,7 +141,7 @@ def seed_database(fresh=False):
         Employee(
             employee_no="E3201",
             username="finance_user",
-            password_hash=generate_password_hash("CdEmp#2026!A7"),
+            password_hash=generate_password_hash(demo_password),
             full_name="李欣",
             email="finance_user@enterprise.local",
             phone="13800000006",
@@ -263,3 +284,12 @@ def seed_database(fresh=False):
         ]
     )
     db.session.commit()
+
+
+def rotate_demo_password():
+    password = configured_demo_password()
+    employees = Employee.query.filter(Employee.username.in_(DEMO_USERNAMES)).all()
+    for employee in employees:
+        employee.password_hash = generate_password_hash(password)
+    db.session.commit()
+    return len(employees)
