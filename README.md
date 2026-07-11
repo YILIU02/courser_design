@@ -46,7 +46,13 @@ python backend/run.py
 
 ## 演示账号
 
-执行种子命令前必须设置独立 `DEMO_PASSWORD`。演示账号只用于本地或受控测试环境，不在仓库中提供默认密码。对已有数据执行 `flask --app backend/run.py rotate-demo-password` 可轮换这些账号的密码。
+本地演示可设置 `DEMO_PASSWORD` 后执行种子命令，并使用以下账号：
+
+- 管理员：`admin / CdAdmin#2026!A7`
+- 研发负责人：`rd_manager / CdMgr#2026!A7`
+- 普通员工：`rd_user / CdEmp#2026!A7`
+
+线上环境应设置不同的 `DEMO_PASSWORD`，并可通过 `flask --app backend/run.py rotate-demo-password` 轮换已有演示账号密码。
 
 ## 前端启动
 
